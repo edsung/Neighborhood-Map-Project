@@ -67,7 +67,7 @@ function ViewModel(map) {
           success: function(response) {
                       var contentIdx = response.query.pageids[0];
                       wikiTxt = response.query.pages[contentIdx].extract;
-                      locations.info = wikiTxt;
+                      locations.info = ko.observable(wikiTxt);
                       wikiLink.push(wikiTxt); 
                       //response.query.pages[contentIdx].extract);                      
                       //self.locations()[i].content = response.query.pages[contentIdx].extract;
@@ -97,12 +97,12 @@ function ViewModel(map) {
 
         var holder = self.locations()[i];
 
-        console.log(holder.info);
+        console.log(holder);
 
     		google.maps.event.addListener(marker,'click', (function(marker, holder){
     			return function() {
                 map.panTo(marker.getPosition());
-                infowindow.setContent(holder.info);
+                infowindow.setContent();
                 infowindow.open(map, marker);
 
               	// Google Maps API marker animation
