@@ -57,7 +57,7 @@ function ViewModel(map) {
           self.locations.push(new atlLocations(data));
       });
 
-      function wikiFetch(infowindow, site){
+      function wikiFetch(locations, site){
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?&format=json&action=query&prop=extracts&exintro&explaintext&titles=' + site+ '&redirects=1&indexpageids=0';
         //var url='hello';
 
@@ -67,7 +67,7 @@ function ViewModel(map) {
           success: function(response) {
                       var contentIdx = response.query.pageids[0];
                       wikiTxt = response.query.pages[contentIdx].extract;
-                      infowindow.setContent(wikiTxt);
+                      locations.info = wikiTxt;
                       wikiLink.push(wikiTxt); 
                       //response.query.pages[contentIdx].extract);                      
                       //self.locations()[i].content = response.query.pages[contentIdx].extract;
@@ -79,26 +79,30 @@ function ViewModel(map) {
         });
 
       }
+
+      infowindow = new google.maps.InfoWindow({
+                      content: ''
+        });
  
     	for(i=0;i<sites.length;i++){
 
-        //console.log(wikiLink[i]);
-
-        infowindow = new google.maps.InfoWindow({
-                      content: ''
-        });
-
+      
     		marker = new google.maps.Marker({
     	 		position: {lat: sites[i].lat, lng: sites[i].lng},
     	 		map: map,
           title:sites[i].title
   	     		});
 
-        wikiFetch(infowindow, sites[i].title);
+        wikiFetch(self.locations()[i], sites[i].title);
 
-    		google.maps.event.addListener(marker,'click', (function(marker){
+        var holder = self.locations()[i];
+
+        console.log(holder.info);
+
+    		google.maps.event.addListener(marker,'click', (function(marker, holder){
     			return function() {
                 map.panTo(marker.getPosition());
+                infowindow.setContent(holder.info);
                 infowindow.open(map, marker);
 
               	// Google Maps API marker animation
