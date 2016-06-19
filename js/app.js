@@ -70,6 +70,7 @@ function ViewModel(map) {
                       wikiTxt = response.query.pages[contentIdx].extract;
                       locations.info = wikiTxt;
 
+                      //setting google map event listener for clicks on the map.
                       google.maps.event.addListener(marker,'click', (function(marker){
                       return function() {
                       map.panTo(marker.getPosition());
@@ -83,7 +84,9 @@ function ViewModel(map) {
                       })(marker));
                   },
 
+          //async response handling error handling          
           error: function (response, textStatus, errorThrown) {
+                      alert("Something went wrong");
                   }
         });
 
@@ -97,26 +100,16 @@ function ViewModel(map) {
       //setting the marker and infowindow content for each site.
     	for(i=0;i<sites.length;i++){
 
-      
+        //Creating new marker object for each site.        
     		marker = new google.maps.Marker({
     	 		position: {lat: sites[i].lat, lng: sites[i].lng},
     	 		map: map,
           title:sites[i].title
   	     		});
 
+
+        //calling function to send wiki api call.
         wikiFetch(self.locations()[i], sites[i].title, marker);
-
-    		google.maps.event.addListener(marker,'click', (function(marker){
-    			return function() {
-                map.panTo(marker.getPosition());
-
-                infowindow.open(map, marker);
-
-              	// Google Maps API marker animation
-              	marker.setAnimation(google.maps.Animation.BOUNCE);
-              	setTimeout(function(){ marker.setAnimation(null); }, 900);
-            	};
-    		})(marker));
 
         //load marker object of each site into observable array. Used for enable and disable visibility on map.
     		self.locations()[i].markers = marker;
