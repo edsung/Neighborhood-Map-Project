@@ -11,7 +11,8 @@ To run the application:
 3. Enjoy the app.
 
 #Works Cited
-1.http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
+
+1. http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
 
 2. Udacity Forum, Code Reviews, and Mentors.
 
