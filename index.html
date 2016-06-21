@@ -20,7 +20,7 @@
 
   </head>
   <body>
-      <div>Search<input data-bind="textInput: searchKey, event: {keyup : search}"></input></div>
+      <div>Search<input data-bind="textInput: searchKey"></input></div>
       <div class="col-md-3" id="list">
         <table>
           <thead><tr>
@@ -36,14 +36,21 @@
       <div class="container-fluid col-md-9" id="map"></div>
   
     <!-- Google Maps API Key AIzaSyALeih66kMphQRZKlBn_NY5ru92hhw1D1w -->
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALeih66kMphQRZKlBn_NY5ru92hhw1D1w&callback=initMap">
-    </script>
     <script type='text/javascript' src="js/knockout-3.4.0.js"></script>
     <script src="js/app.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <!-- Google Maps Error Handling JS -->
+    <script>
+      function googleError() {
+      
+        alert("Google Map Error!");
+      }
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALeih66kMphQRZKlBn_NY5ru92hhw1D1w&callback=initMap" onerror="googleError()">
+    </script>
   </body>
 </html>

@@ -62,10 +62,15 @@ function ViewModel(map) {
       function wikiFetch(locations, site, marker){
         var wikiUrl = 'http://en.wikipedia.org/w/api.php?&format=json&action=query&prop=extracts&exintro&explaintext&titles=' + site+ '&redirects=2&indexpageids=0';
 
+        var wikiError = setTimeout(function(){
+            alert("Error Occurred.");
+        },8000);
+
         $.ajax({
           url: wikiUrl,
           dataType: "jsonp",
-          success: function(response) {
+          timeout: 1000,
+          }).done(function(response) {
                       var contentIdx = response.query.pageids[0];
                       wikiTxt = response.query.pages[contentIdx].extract;
                       locations.info = wikiTxt;
@@ -82,13 +87,12 @@ function ViewModel(map) {
                       setTimeout(function(){ marker.setAnimation(null); }, 900);
                        };
                       })(marker));
-                  },
 
-          //async response handling error handling          
-          error: function (response, textStatus, errorThrown) {
-                      alert("Something went wrong");
-                  }
-        });
+                      clearTimeout(wikiError);
+          }).fail( function(response, textStatus, errorThrown){
+                    wikiError;
+               
+          });
 
       }
 
